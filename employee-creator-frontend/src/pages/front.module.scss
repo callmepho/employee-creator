@@ -1,0 +1,116 @@
+.body {
+}
+
+.forms {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 5px solid grey;
+  border-radius: 10px;
+  position: fixed;
+  z-index: 3;
+  right: 25%;
+  top: 15%;
+  gap: 15px;
+  width: 50vw;
+  padding: 20px 0 20px 100px;
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal_outer {
+  background-color: grey;
+  opacity: 0.4;
+  height: 100vh;
+  width: 100vw;
+  right: 0;
+  top: 0;
+  position: fixed;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 200px;
+  gap: 10px;
+}
+
+.error {
+  color: red;
+}
+
+.card {
+  width: 100%;
+  border: 1px solid gray;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  height: 30vh;
+  align-items: center;
+  background-color: lightgray;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 200px;
+}
+
+.heading {
+  margin: 0 200px;
+}
+
+.card_heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.card_info {
+  margin: 0 10px;
+  color: gray;
+}
+
+h3 {
+  margin: 0;
+}
+
+.addbtn {
+  background-color: #2a628f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  width: 200px;
+  font-size: large;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+h4 {
+  margin: 0;
+}
+
+.card_btn {
+  color: #13293d;
+  font-weight: bold;
+  background-color: white;
+  border: none;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
