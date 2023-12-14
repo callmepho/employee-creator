@@ -12,7 +12,7 @@ export interface Employee {
   contract: string;
   startDate: string;
   finishDate: string;
-  onGoing: boolean;
+  onGoing: string;
   type: string;
   hours: number;
 }

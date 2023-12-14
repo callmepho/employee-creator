@@ -14,14 +14,12 @@ const saveSchema = Yup.object().shape({
   phone: Yup.number().required("Phone number is required"),
   address: Yup.string().required("Address is required"),
   contract: Yup.string().required("Contract is required"),
-  startDate: Yup.date()
-    .max(Yup.ref("finishDate"), "Start date can't be after Finish Date")
-    .required("Start date is required"),
+  startDate: Yup.date().required("Start date is required"),
   finishDate: Yup.date().min(
     Yup.ref("startDate"),
     "Finish Date can't be before Start Date"
   ),
-  onGoing: Yup.boolean().required("onGoing is required"),
+  onGoing: Yup.string().required("onGoing is required"),
   type: Yup.string().required("Employeement type is required"),
   hours: Yup.number()
     .min(1, "Minimum hours is 1")
@@ -39,7 +37,7 @@ export interface FormData {
   contract: string;
   startDate: Date;
   finishDate?: Date;
-  onGoing: boolean;
+  onGoing: string;
   type: string;
   hours: number;
 }
@@ -58,7 +56,15 @@ export const EmployeeForm = ({ employee, id }: Props) => {
     reset,
   } = useForm({
     resolver: yupResolver(saveSchema),
-    defaultValues: employee,
+    defaultValues: {
+      firstName: employee.firstName,
+      middleName: employee.middleName,
+      lastName: employee.lastName,
+      email: employee.email,
+      phone: employee.phone,
+      address: employee.address,
+      hours: employee.hours,
+    },
     mode: "all",
   });
 
@@ -71,7 +77,15 @@ export const EmployeeForm = ({ employee, id }: Props) => {
 
   useEffect(() => {
     if (employee) {
-      reset(employee);
+      reset({
+        firstName: employee.firstName,
+        middleName: employee.middleName,
+        lastName: employee.lastName,
+        email: employee.email,
+        phone: employee.phone,
+        address: employee.address,
+        hours: employee.hours,
+      });
     }
   }, [employee]);
 
@@ -131,11 +145,21 @@ export const EmployeeForm = ({ employee, id }: Props) => {
       <label className={styles.label}>
         What is the contract type?
         <div>
-          <input type="radio" {...register(`contract`)} value="permanent" />
+          <input
+            type="radio"
+            {...register(`contract`)}
+            value="permanent"
+            defaultChecked={employee.contract === "permanent"}
+          />
           <label>Permanent</label>
         </div>
         <div>
-          <input type="radio" {...register(`contract`)} value="contract" />
+          <input
+            type="radio"
+            {...register(`contract`)}
+            value="contract"
+            defaultChecked={employee.contract === "contract"}
+          />
           <label>Contract</label>
         </div>
         {errors?.contract && (
@@ -145,7 +169,13 @@ export const EmployeeForm = ({ employee, id }: Props) => {
 
       <label className={styles.label}>
         Start Date
-        <input type="date" {...register(`startDate`)} />
+        <input
+          type="date"
+          {...register(`startDate`)}
+          defaultValue={new Date(employee.startDate)
+            .toISOString()
+            .substring(0, 10)}
+        />
         {errors?.startDate && (
           <p className={styles.error}>{errors.startDate.message}</p>
         )}
@@ -153,13 +183,26 @@ export const EmployeeForm = ({ employee, id }: Props) => {
 
       <label className={styles.label}>
         Finish Date
-        <input type="date" {...register(`finishDate`)} />
+        <input
+          type="date"
+          {...register(`finishDate`)}
+          defaultValue={
+            employee.finishDate
+              ? new Date(employee.finishDate).toISOString().substring(0, 10)
+              : ""
+          }
+        />
         {errors?.finishDate && (
           <p className={styles.error}>{errors.finishDate.message}</p>
         )}
       </label>
       <label>
-        <input type="checkbox" {...register("onGoing", { value: true })} />
+        <input
+          type="checkbox"
+          {...register("onGoing")}
+          value={"true"}
+          defaultChecked={employee.onGoing == "true"}
+        />
         On going
       </label>
       {errors?.onGoing && (
@@ -169,11 +212,21 @@ export const EmployeeForm = ({ employee, id }: Props) => {
       <label className={styles.label}>
         Is this on a full-time or part-time basis?
         <div>
-          <input type="radio" {...register("type")} value="full" />
+          <input
+            type="radio"
+            {...register("type")}
+            value="full"
+            defaultChecked={employee.type === "full"}
+          />
           <label>Full-time</label>
         </div>
         <div>
-          <input type="radio" {...register("type")} value="part" />
+          <input
+            type="radio"
+            {...register("type")}
+            value="part"
+            defaultChecked={employee.type === "part"}
+          />
           <label>Part-time</label>
         </div>
         {errors?.type && <p className={styles.error}>{errors.type.message}</p>}
@@ -211,7 +264,7 @@ const EmployeePage = () => {
       <div className={styles.header}>
         <h1 className={styles.heading}>Employees Details</h1>
       </div>
-      <EmployeeForm employee={data} id={id} />
+      {data != null && <EmployeeForm employee={data} id={id} />}
     </div>
   );
 };

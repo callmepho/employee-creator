@@ -21,7 +21,7 @@ const saveSchema = Yup.object().shape({
     Yup.ref("startDate"),
     "Finish Date can't be before Start Date"
   ),
-  onGoing: Yup.boolean().required("onGoing is required"),
+  onGoing: Yup.string().required("onGoing is required"),
   type: Yup.string().required("Employeement type is required"),
   hours: Yup.number()
     .min(1, "Minimum hours is 1")
@@ -39,7 +39,7 @@ export interface FormData {
   contract: string;
   startDate: Date;
   finishDate?: Date;
-  onGoing: boolean;
+  onGoing: string;
   type: string;
   hours: number;
 }
@@ -90,22 +90,9 @@ export const CreateEmployeeForm = ({ setShowModal, reloadData }: any) => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     resolver: yupResolver(saveSchema),
-    defaultValues: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      onGoing: false,
-      email: "",
-      address: "",
-      contract: "",
-      startDate: new Date(),
-      finishDate: new Date(),
-      type: "",
-      hours: 0,
-    },
+    defaultValues: { onGoing: "false" },
     mode: "all",
   });
 
@@ -195,7 +182,7 @@ export const CreateEmployeeForm = ({ setShowModal, reloadData }: any) => {
         )}
       </label>
       <label>
-        <input type="checkbox" {...register("onGoing", { value: true })} />
+        <input type="checkbox" {...register("onGoing", { value: "true" })} />
         On going
       </label>
       {errors?.onGoing && (
